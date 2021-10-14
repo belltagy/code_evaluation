@@ -12,7 +12,7 @@ def parse_search_phrase(allowed_fields, phrase):
     if not hasattr(allowed_fields,'__iter__'):
         # you can raise error or return empty query object
         print("empty Filter")
-        return Q()
+        return None
 
     transformed = parse_brackets(phrase)
     print('transformed', transformed)

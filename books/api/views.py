@@ -13,14 +13,19 @@ class AuthorsListView(ListAPIView):
         # get keyword query and pass it to querysite
         query = self.request.query_params.get('query',None)
         print(query)
-        if query:
-            #TODO catch error here with appropiate response message if bad query
-            q = parse_search_phrase(self.allowed_fields, query)
-            q
-            print(q)
-            queryset = Author.objects.filter(q)
-            return queryset
-        else:
-            queryset = Author.objects.none()
-            return queryset
+        try:
+
+            if query:
+                #TODO catch error here with appropiate response message if bad query
+                q = parse_search_phrase(self.allowed_fields, query)
+                q
+                print(q)
+                queryset = Author.objects.filter(q)
+                return queryset
+            else:
+                queryset = Author.objects.none()
+                return queryset
+        except:
+                queryset = Author.objects.none()
+                return queryset
 

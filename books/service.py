@@ -8,8 +8,10 @@ def parse_brackets(val):
 def parse_search_phrase(allowed_fields, phrase):
     # assume  allowed fields is list
     # check if allowed fields is iteratable or not
+    # TODO exception if inconsistent list need to be handeled 
     if not hasattr(allowed_fields,'__iter__'):
         # you can raise error or return empty query object
+        print("empty Filter")
         return Q()
 
     transformed = parse_brackets(phrase)
@@ -19,17 +21,16 @@ def parse_search_phrase(allowed_fields, phrase):
             for operator in ('OR', 'AND'):
                 try:
                     index = transformed.index(operator)
-                    print("index of operator",index)
+                    #print("index of operator",index)
                     break
                 except:
                     pass
             else:
-                print("operator not found",transformed)
+                #print("operator not found",transformed)
                 if isinstance(transformed[0],list):
                     return  form_query(allowed_fields,transformed[0])
                 else:
                     if transformed[0] in allowed_fields:
-                        print("fields is ",transformed[0] )
                         # FIXME catch if user input in form (id in [1,2,3,4]) to be done later if time available
                         return Q(**{'__'.join((transformed[0],transformed[1])):transformed[2]})
                     else:
